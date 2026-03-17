@@ -1,0 +1,40 @@
+# ==========================================
+# PROCESS PARAMS (THE UNCHANGEABLE CONSTRAINTS)
+# Physical node tech. Do not modify.
+# ==========================================
+process_params:
+  tox_n_nm: 3.981
+  tox_p_nm: 4.06
+  mu0_n: 0.0305
+  mu0_p: 0.0139
+  vth0_n: 0.4395
+  vth0_p: 0.459
+  lambda_n: 0.719
+  lambda_p: 0.491
+  epsilon_ox_F_m: 3.4515e-11
+
+# ==========================================
+# DESIGN SPECS (THE TARGET GOALPOSTS)
+# Project requirements. Do not modify.
+# ==========================================
+design_specs:
+  VDD: 1.8
+  VSS: 0.0
+  CL_pF: 2.0
+  GBW_MHz: 10.0
+  SR_V_us: 10.0
+  ICMR_min: 0.8
+  ICMR_max: 1.4
+  Vout_min: 0.4
+  Vout_max: 1.5
+  Pdiss_max_mW: 9.0
+
+# ==========================================
+# DESIGN CHOICES
+# ==========================================
+design_choices:
+  # Determines Phase Margin. Must be > 0.22 for 60 degrees.
+  Cc_multiplier: 0.22
+  
+  # Base transistor length. Increase this to boost voltage gain.
+  L_default_um: 0.18

@@ -3,33 +3,34 @@ Two-Stage CMOS Operational Amplifier Design Automation
 
 This module automates the analytical sizing and verification calculations
 for an unbuffered, two-stage CMOS operational amplifier. It parses process
-parameters and design specifications from an external JSON configuration
+parameters and design specifications from an external YAML configuration
 file and sequentially calculates the required W/L (aspect) ratios, bias
 currents, and compensation capacitance to meet target performance metrics
 such as Gain, Phase Margin, and Slew Rate.
 
-Author: Kiet Le
+Author: Kiet
 Date: 2026-03-17
 
 Dependencies:
-    - json (Standard Library)
+    - pyyaml (Install via: pip install pyyaml)
     - math (Standard Library)
 
 Usage:
-    Ensure 'design_params.json' is present in the working directory
+    Ensure 'design_params.yaml' is present in the working directory
     before executing the script.
 
     $ python opamp_designer.py
 """
 
-import json
+import yaml
 import math
 
 class OpAmpDesigner:
-    def __init__(self, json_file):
-        with open(json_file, 'r') as f:
-            data = json.load(f)
-            
+    def __init__(self, yaml_file):
+        with open(yaml_file, 'r') as f:
+            # safe_load is recommended for security when parsing YAML
+            data = yaml.safe_load(f)
+
         self.proc = data['process_params']
         self.spec = data['design_specs']
         self.choice = data['design_choices']
@@ -115,36 +116,70 @@ class OpAmpDesigner:
         self.results['S6 (W/L)'] = self.S6
 
     def stage_7_second_stage_bias(self):
-        """Step 8 & 9: Calculate I6 and size M7."""
+        """Step 8 & 9: Calculate I6, verify output swing limits, and size M7."""
         # I6 = gm6^2 / (2 * Kp' * S6)
         self.I6 = (self.gm6 ** 2) / (2 * self.Kp_prime * self.S6)
+        
+        # Check against Vout_max requirement
+        vsd6_sat_max = self.spec['VDD'] - self.spec['Vout_max']
+        S6_min_swing = (2 * self.I6) / (self.Kp_prime * (vsd6_sat_max ** 2))
+        if self.S6 < S6_min_swing:
+            self.S6 = S6_min_swing
+            # Recalculate I6 to maintain gm6 phase margin requirement with new S6
+            self.I6 = (self.gm6 ** 2) / (2 * self.Kp_prime * self.S6)
+            self.results['S6 (W/L)'] = self.S6
+
         self.results['I6 (uA)'] = self.I6 * 1e6
         
         # S7 = S5 * (I6 / I5)
         self.S7 = self.S5 * (self.I6 / self.I5)
+        
+        # Check against Vout_min requirement
+        vds7_sat_max = self.spec['Vout_min'] - self.spec['VSS']
+        S7_min_swing = (2 * self.I6) / (self.Kn_prime * (vds7_sat_max ** 2))
+        if self.S7 < S7_min_swing:
+            self.S7 = S7_min_swing
+            
         self.results['S7 (W/L)'] = self.S7
 
     def stage_8_verify_specs(self):
-        """Step 10: Verify Gain and Power Specs."""
+        """Step 10: Verify Gain, Power Specs, and finalize physical dimensions."""
+        
+        # Scale lambda based on chosen L_default_um relative to the 0.18um minimum length
+        L_ratio = 0.18 / self.choice['L_default_um']
+        lambda_n_actual = self.proc['lambda_n'] * L_ratio
+        lambda_p_actual = self.proc['lambda_p'] * L_ratio
+
         # Av = (2 * gm2 * gm6) / (I5*(lambda2 + lambda3) * I6*(lambda6 + lambda7))
-        lambda_sum_1 = self.proc['lambda_n'] + self.proc['lambda_p']
-        lambda_sum_2 = self.proc['lambda_p'] + self.proc['lambda_n']
+        lambda_sum_1 = lambda_n_actual + lambda_p_actual
+        lambda_sum_2 = lambda_p_actual + lambda_n_actual
         
         gain_linear = (2 * self.gm2 * self.gm6) / (self.I5 * lambda_sum_1 * self.I6 * lambda_sum_2)
         gain_dB = 20 * math.log10(gain_linear)
         self.results['Calculated Gain (dB)'] = gain_dB
         
-        # Power Dissipation
+        # Power Dissipation Verification
         pdiss_W = (self.I5 + self.I6) * (self.spec['VDD'] - self.spec['VSS'])
         self.results['Power Diss (mW)'] = pdiss_W * 1000
+        self.results['Meets Power Spec?'] = (pdiss_W * 1000) <= self.spec['Pdiss_max_mW']
+
+        # Calculate physical transistor Widths (W = S * L)
+        L = self.choice['L_default_um']
+        self.results['W1, W2 (um)'] = self.S1 * L
+        self.results['W3, W4 (um)'] = self.S3 * L
+        self.results['W5 (um)'] = self.S5 * L
+        self.results['W6 (um)'] = self.S6 * L
+        self.results['W7 (um)'] = self.S7 * L
 
     def print_results(self):
         print("\n=== Op-Amp Sizing Results ===")
         for key, value in self.results.items():
-            print(f"{key:25}: {value:.4f}")
+            if isinstance(value, bool):
+                print(f"{key:25}: {'Yes' if value else 'No'}")
+            else:
+                print(f"{key:25}: {value:.4f}")
         print("=============================\n")
 
 if __name__ == "__main__":
-    # Create the params.json file first!
-    designer = OpAmpDesigner('design_params.json')
+    designer = OpAmpDesigner('design_params.yaml')
     designer.run_all_stages()
