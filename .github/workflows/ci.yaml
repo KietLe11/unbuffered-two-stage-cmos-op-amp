@@ -2,9 +2,15 @@ name: Op-Amp Designer CI
 
 on:
   push:
-    branches: main
+    branches: [ main ]
   pull_request:
-    branches: main
+    branches: [ main ]
+
+# These permissions allow the bots to leave inline comments on your PRs
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
 
 jobs:
   build-and-test:
@@ -20,27 +26,28 @@ jobs:
         python-version: "3.11"
         cache: 'pip'
 
-    # 1. Premade Action for Black (Formatting)
-    # Will fail the check if your code isn't formatted to PEP 8 standards.
+    # 1. The Formatter (Reviewdog)
+    # Posts formatting suggestions directly on the changed lines in the PR
     - name: Check Code Formatting (Black)
-      uses: psf/black@stable
+      uses: reviewdog/action-black@v3
       with:
-        options: "--check"
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        reporter: github-pr-review
+        black_args: "."
 
-    # 2. Premade Action for Ruff (Linting)
-    # This officially supported action automatically creates inline comments
-    # on your Pull Request for any syntax errors, unused variables, etc.
+    # 2. The Linter (Astral)
+    # Natively highlights syntax errors and unused variables in the PR
     - name: Lint Python Code (Ruff)
       uses: astral-sh/ruff-action@v3
 
-    # 3. Setup Dependencies for Testing
+    # 3. Setup Dependencies
+    # (Ensure pytest-github-actions-annotate-failures is in your requirements.txt!)
     - name: Install Test Dependencies
       run: |
         python -m pip install --upgrade pip
-        # We add a special pytest plugin here that translates test failures into GitHub comments
-        pip install pyyaml pytest pytest-github-actions-annotate-failures
+        pip install -r requirements.txt
 
-    # 4. Run Pytest
-    # If a math calculation fails, the plugin will comment on the exact 'assert' line that broke.
+    # 4. The Tester (Pytest)
+    # The installed plugin intercepts failures and annotates the exact 'assert' line
     - name: Run Math Verification Tests
       run: pytest -v

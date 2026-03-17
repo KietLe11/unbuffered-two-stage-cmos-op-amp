@@ -1,0 +1,5 @@
+pyyaml
+pytest
+ruff
+black
+pytest-github-actions-annotate-failures
