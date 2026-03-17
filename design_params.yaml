@@ -31,7 +31,7 @@ design_specs:
 
 # ==========================================
 # DESIGN CHOICES
-# Your control knobs. Tweak these to meet/exceed specs.
+# Modify to meet/exceed specs.
 # ==========================================
 design_choices:
   # Determines Phase Margin. Must be > 0.22 for 60 degrees.
