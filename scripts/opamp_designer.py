@@ -92,12 +92,29 @@ class OpAmpDesigner:
         self.results['I5 (uA)'] = self.I5 * 1e6
 
     def stage_3_active_load(self):
-        """Step 3: Size M3 and M4 based on Max ICMR."""
+        """Step 3: Size M3 and M4 based on Max ICMR, and Step 4: Verify Mirror Pole."""
         # S3 = I5 / (Kp * [VDD - Vin_max - |Vthp| + Vthn]^2)
         v_diff = self.spec['VDD'] - self.spec['ICMR_max'] - abs(self.proc['vth0_p']) + self.proc['vth0_n']
         self.S3 = self.I5 / (self.Kp_prime * (v_diff ** 2))
         self.S4 = self.S3 # Mirror pair
         self.results['S3, S4 (W/L)'] = self.S3
+
+        # --- STEP 4: VERIFY MIRROR POLE IS NOT DOMINANT ---
+        # 1. Calculate gm3. Current through M3 is half the tail current (I5 / 2).
+        gm3 = math.sqrt(2 * self.Kp_prime * self.S3 * (self.I5 / 2))
+
+        # 2. Calculate Cgs3 = 0.67 * W3 * L3 * Cox
+        # Note: Since S3 = W3/L3, then W3 * L3 = S3 * L^2
+        L_meters = self.choice['L_default_um'] * 1e-6
+        Cgs3 = 0.67 * self.S3 * (L_meters ** 2) * self.Cox_p
+
+        # 3. Calculate the mirror pole location in rad/s
+        mirror_pole_rad = gm3 / (2 * Cgs3)
+
+        # 4. Compare against 10 * GBW (converted to rad/s)
+        GBW_rad = self.choice['GBW_target_MHz'] * 1e6 * 2 * math.pi
+
+        self.results['Mirror Pole > 10GBW?'] = mirror_pole_rad > (10 * GBW_rad)
 
     def stage_4_input_pair(self):
         """Step 5: Size M1 and M2 based on Gain-Bandwidth."""
