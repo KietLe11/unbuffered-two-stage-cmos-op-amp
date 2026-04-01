@@ -167,7 +167,7 @@ class OpAmpDesigner:
     def stage_7_second_stage_bias(self):
         """Step 8 & 9: Calculate I6, verify output swing limits, and size M7."""
         # I6 = gm6^2 / (2 * Kp' * S6)
-        self.I6 = (self.gm6 ** 2) / (2 * self.Kp_prime * self.S6)
+        self.I6 = (self.gm6**2) / (2 * self.Kp_prime * self.S6)
 
         # Check against Vout_max requirement
         vsd6_sat_max = self.spec["VDD"] - self.spec["Vout_max"]
