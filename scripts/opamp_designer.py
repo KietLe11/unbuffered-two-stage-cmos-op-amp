@@ -199,7 +199,9 @@ class OpAmpDesigner:
 
         if self.S7 < S7_min_swing:
             print("\n[CORRECTION] M7 Output Swing Limit Reached.")
-            print(f" -> Calculated S7 ({self.S7:.4f}) is too small to sink current at Vout_min without clipping.")
+            print(
+                f" -> Calculated S7 ({self.S7:.4f}) is too small to sink current at Vout_min without clipping."
+            )
             print(f" -> Enforcing minimum S7 of {S7_min_swing:.4f}.")
             self.S7 = S7_min_swing
 
