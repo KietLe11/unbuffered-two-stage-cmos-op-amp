@@ -266,12 +266,27 @@ class OpAmpDesigner:
         target_gain = self.spec.get("Gain_min_dB", 60.0)
 
         checks = {
-            "Voltage Gain": (self.gain_dB >= target_gain, f"{self.gain_dB:.1f} dB >= {target_gain} dB target"),
-            "Power Dissipation": (self.pdiss_mW <= self.spec['Pdiss_max_mW'], f"{self.pdiss_mW:.2f} mW <= {self.spec['Pdiss_max_mW']} mW limit"),
-            "Mirror Pole Separation": (self.results.get('Mirror Pole > 10GBW?', False), "Pole pushed safely past 10x GBW"),
-            "Slew Rate": (True, f"Mathematically locked at {self.choice['SR_target_V_us']} V/us"),
-            "Gain-Bandwidth (GBW)": (True, f"Mathematically locked at {self.choice['GBW_target_MHz']} MHz"),
-            "ICMR & Output Swings": (True, "Enforced via minimum W/L bounding")
+            "Voltage Gain": (
+                self.gain_dB >= target_gain,
+                f"{self.gain_dB:.1f} dB >= {target_gain} dB target",
+            ),
+            "Power Dissipation": (
+                self.pdiss_mW <= self.spec["Pdiss_max_mW"],
+                f"{self.pdiss_mW:.2f} mW <= {self.spec['Pdiss_max_mW']} mW limit",
+            ),
+            "Mirror Pole Separation": (
+                self.results.get("Mirror Pole > 10GBW?", False),
+                "Pole pushed safely past 10x GBW",
+            ),
+            "Slew Rate": (
+                True,
+                f"Mathematically locked at {self.choice['SR_target_V_us']} V/us",
+            ),
+            "Gain-Bandwidth (GBW)": (
+                True,
+                f"Mathematically locked at {self.choice['GBW_target_MHz']} MHz",
+            ),
+            "ICMR & Output Swings": (True, "Enforced via minimum W/L bounding"),
         }
 
         for spec, (passed, details) in checks.items():
