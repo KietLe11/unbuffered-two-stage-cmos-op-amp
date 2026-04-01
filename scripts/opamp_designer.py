@@ -263,7 +263,7 @@ class OpAmpDesigner:
         print("=====================================\n")
 
         print("=== Final Specification Check ===")
-        target_gain = self.spec.get('Gain_min_dB', 60.0)
+        target_gain = self.spec.get("Gain_min_dB", 60.0)
 
         checks = {
             "Voltage Gain": (self.gain_dB >= target_gain, f"{self.gain_dB:.1f} dB >= {target_gain} dB target"),
