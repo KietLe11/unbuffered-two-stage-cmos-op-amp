@@ -28,6 +28,7 @@ design_specs:
   Vout_min: 0.4
   Vout_max: 1.5
   Pdiss_max_mW: 9.0
+  Gain_min_dB: 60.0
 
 # ==========================================
 # DESIGN CHOICES
@@ -38,7 +39,7 @@ design_choices:
   Cc_multiplier: 0.22
 
   # Base transistor length. Increase this to boost voltage gain.
-  L_default_um: 0.18
+  L_default_um: 0.67
 
   # Target design goals (must comply with min/max specs above)
   CL_target_pF: 2.0

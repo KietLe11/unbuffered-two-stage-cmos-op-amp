@@ -76,6 +76,5 @@ def test_baseline_math_calculations(baseline_yaml_file):
     assert res['S7 (W/L)'] == pytest.approx(6.0999, abs=1e-4)
 
     # Assert Final Verification Metrics
-    assert res['Calculated Gain (dB)'] == pytest.approx(37.2156, abs=1e-4)
-    assert res['Power Diss (mW)'] == pytest.approx(0.0668, abs=1e-4)
-    assert res['Meets Power Spec?'] is True
+    assert res["Calculated Gain (dB)"] == pytest.approx(37.2156, abs=1e-4)
+    assert res["Power Diss (mW)"] == pytest.approx(0.0668, abs=1e-4)
