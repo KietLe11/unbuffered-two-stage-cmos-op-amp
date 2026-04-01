@@ -236,11 +236,11 @@ class OpAmpDesigner:
         W_min_um = 0.22
 
         raw_widths = {
-            'W1, W2': self.S1 * L,
-            'W3, W4': self.S3 * L,
-            'W5': self.S5 * L,
-            'W6': self.S6 * L,
-            'W7': self.S7 * L
+            "W1, W2": self.S1 * L,
+            "W3, W4": self.S3 * L,
+            "W5": self.S5 * L,
+            "W6": self.S6 * L,
+            "W7": self.S7 * L,
         }
 
         for name, w_calc in raw_widths.items():
