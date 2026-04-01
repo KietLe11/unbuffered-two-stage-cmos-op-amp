@@ -177,8 +177,12 @@ class OpAmpDesigner:
 
         if self.S6 < S6_min_swing:
             print("\n[CORRECTION] M6 Output Swing Limit Reached.")
-            print(f" -> Calculated S6 ({self.S6:.4f}) is too small to drive Vout_max without clipping.")
-            print(f" -> Enforcing minimum S6 of {S6_min_swing:.4f} and recalculating I6 to maintain Phase Margin.")
+            print(
+                f" -> Calculated S6 ({self.S6:.4f}) is too small to drive Vout_max without clipping."
+            )
+            print(
+                f" -> Enforcing minimum S6 of {S6_min_swing:.4f} and recalculating I6 to maintain Phase Margin."
+            )
             self.S6 = S6_min_swing
             # Recalculate I6 to maintain gm6 phase margin requirement with new S6
             self.I6 = (self.gm6 ** 2) / (2 * self.Kp_prime * self.S6)
