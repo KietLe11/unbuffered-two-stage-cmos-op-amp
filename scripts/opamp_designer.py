@@ -94,10 +94,15 @@ class OpAmpDesigner:
     def stage_3_active_load(self):
         """Step 3: Size M3 and M4 based on Max ICMR, and Step 4: Verify Mirror Pole."""
         # S3 = I5 / (Kp * [VDD - Vin_max - |Vthp| + Vthn]^2)
-        v_diff = self.spec['VDD'] - self.spec['ICMR_max'] - abs(self.proc['vth0_p']) + self.proc['vth0_n']
-        self.S3 = self.I5 / (self.Kp_prime * (v_diff ** 2))
-        self.S4 = self.S3 # Mirror pair
-        self.results['S3, S4 (W/L)'] = self.S3
+        v_diff = (
+            self.spec["VDD"]
+            - self.spec["ICMR_max"]
+            - abs(self.proc["vth0_p"])
+            + self.proc["vth0_n"]
+        )
+        self.S3 = self.I5 / (self.Kp_prime * (v_diff**2))
+        self.S4 = self.S3  # Mirror pair
+        self.results["S3, S4 (W/L)"] = self.S3
 
         # --- STEP 4: VERIFY MIRROR POLE IS NOT DOMINANT ---
         # 1. Calculate gm3. Current through M3 is half the tail current (I5 / 2).
