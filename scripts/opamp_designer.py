@@ -197,7 +197,7 @@ class OpAmpDesigner:
             print(f" -> Enforcing minimum S7 of {S7_min_swing:.4f}.")
             self.S7 = S7_min_swing
 
-        self.results['S7 (W/L)'] = self.S7
+        self.results["S7 (W/L)"] = self.S7
 
     def stage_8_verify_specs(self):
         """Step 10: Verify Gain, Power Specs, and finalize physical dimensions."""
