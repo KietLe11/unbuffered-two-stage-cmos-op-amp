@@ -138,9 +138,9 @@ class OpAmpDesigner:
         VDS5_sat = self.spec['ICMR_min'] - self.spec['VSS'] - math.sqrt(self.I5 / beta_1) - self.proc['vth0_n']
 
         if VDS5_sat < 0.1: # Fallback to a minimum 100mV saturation margin if negative
-            print(f"\n[CORRECTION] M5 Headroom Limit Reached.")
+            print("\n[CORRECTION] M5 Headroom Limit Reached.")
             print(f" -> Calculated VDS5_sat was {VDS5_sat:.4f}V (below safe 0.1V minimum).")
-            print(f" -> Enforcing minimum VDS5_sat of 0.1V to keep M5 in saturation.")
+            print(" -> Enforcing minimum VDS5_sat of 0.1V to keep M5 in saturation.")
             VDS5_sat = 0.1
 
         self.S5 = (2 * self.I5) / (self.Kn_prime * (VDS5_sat ** 2))
@@ -169,7 +169,7 @@ class OpAmpDesigner:
         S6_min_swing = (2 * self.I6) / (self.Kp_prime * (vsd6_sat_max ** 2))
 
         if self.S6 < S6_min_swing:
-            print(f"\n[CORRECTION] M6 Output Swing Limit Reached.")
+            print("\n[CORRECTION] M6 Output Swing Limit Reached.")
             print(f" -> Calculated S6 ({self.S6:.4f}) is too small to drive Vout_max without clipping.")
             print(f" -> Enforcing minimum S6 of {S6_min_swing:.4f} and recalculating I6 to maintain Phase Margin.")
             self.S6 = S6_min_swing
@@ -187,7 +187,7 @@ class OpAmpDesigner:
         S7_min_swing = (2 * self.I6) / (self.Kn_prime * (vds7_sat_max ** 2))
 
         if self.S7 < S7_min_swing:
-            print(f"\n[CORRECTION] M7 Output Swing Limit Reached.")
+            print("\n[CORRECTION] M7 Output Swing Limit Reached.")
             print(f" -> Calculated S7 ({self.S7:.4f}) is too small to sink current at Vout_min without clipping.")
             print(f" -> Enforcing minimum S7 of {S7_min_swing:.4f}.")
             self.S7 = S7_min_swing
