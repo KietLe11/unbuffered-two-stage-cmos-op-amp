@@ -248,7 +248,7 @@ class OpAmpDesigner:
                 print(f"\n[CORRECTION] DRC Minimum Width Limit Reached for {name}.")
                 print(f" -> Calculated width ({w_calc:.4f} um) is below the minimum width (0.22 um).")
                 print(f" -> Enforcing minimum width of {W_min_um} um.")
-                self.results[f'{name} (um)'] = W_min_um
+                self.results[f"{name} (um)"] = W_min_um
             else:
                 self.results[f"{name} (um)"] = w_calc
 
