@@ -144,7 +144,9 @@ class OpAmpDesigner:
 
         if VDS5_sat < 0.1:  # Fallback to a minimum 100mV saturation margin if negative
             print("\n[CORRECTION] M5 Headroom Limit Reached.")
-            print(f" -> Calculated VDS5_sat was {VDS5_sat:.4f}V (below safe 0.1V minimum).")
+            print(
+                f" -> Calculated VDS5_sat was {VDS5_sat:.4f}V (below safe 0.1V minimum)."
+            )
             print(" -> Enforcing minimum VDS5_sat of 0.1V to keep M5 in saturation.")
             VDS5_sat = 0.1
 
