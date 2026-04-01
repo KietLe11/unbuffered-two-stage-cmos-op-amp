@@ -265,6 +265,7 @@ class OpAmpDesigner:
             print(f"[{status}] {spec:24}: {details}")
         print("=================================\n")
 
+
 if __name__ == "__main__":
     designer = OpAmpDesigner("design_params.yaml")
     designer.run_all_stages()
