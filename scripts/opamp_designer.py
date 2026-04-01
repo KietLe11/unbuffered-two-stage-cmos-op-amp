@@ -232,7 +232,7 @@ class OpAmpDesigner:
         self.results["Power Diss (mW)"] = self.pdiss_mW
 
         # Calculate physical transistor Widths (W = S * L)
-        L = self.choice['L_default_um']
+        L = self.choice["L_default_um"]
         W_min_um = 0.22
 
         raw_widths = {
