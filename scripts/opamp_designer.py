@@ -110,8 +110,8 @@ class OpAmpDesigner:
 
         # 2. Calculate Cgs3 = 0.67 * W3 * L3 * Cox
         # Note: Since S3 = W3/L3, then W3 * L3 = S3 * L^2
-        L_meters = self.choice['L_default_um'] * 1e-6
-        Cgs3 = 0.67 * self.S3 * (L_meters ** 2) * self.Cox_p
+        L_meters = self.choice["L_default_um"] * 1e-6
+        Cgs3 = 0.67 * self.S3 * (L_meters**2) * self.Cox_p
 
         # 3. Calculate the mirror pole location in rad/s
         mirror_pole_rad = gm3 / (2 * Cgs3)
