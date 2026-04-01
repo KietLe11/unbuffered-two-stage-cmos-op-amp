@@ -117,9 +117,9 @@ class OpAmpDesigner:
         mirror_pole_rad = gm3 / (2 * Cgs3)
 
         # 4. Compare against 10 * GBW (converted to rad/s)
-        GBW_rad = self.choice['GBW_target_MHz'] * 1e6 * 2 * math.pi
+        GBW_rad = self.choice["GBW_target_MHz"] * 1e6 * 2 * math.pi
 
-        self.results['Mirror Pole > 10GBW?'] = mirror_pole_rad > (10 * GBW_rad)
+        self.results["Mirror Pole > 10GBW?"] = mirror_pole_rad > (10 * GBW_rad)
 
     def stage_4_input_pair(self):
         """Step 5: Size M1 and M2 based on Gain-Bandwidth."""
