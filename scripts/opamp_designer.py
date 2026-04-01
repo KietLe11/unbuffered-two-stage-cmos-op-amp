@@ -188,8 +188,8 @@ class OpAmpDesigner:
         self.S7 = self.S5 * (self.I6 / self.I5)
 
         # Check against Vout_min requirement
-        vds7_sat_max = self.spec['Vout_min'] - self.spec['VSS']
-        S7_min_swing = (2 * self.I6) / (self.Kn_prime * (vds7_sat_max ** 2))
+        vds7_sat_max = self.spec["Vout_min"] - self.spec["VSS"]
+        S7_min_swing = (2 * self.I6) / (self.Kn_prime * (vds7_sat_max**2))
 
         if self.S7 < S7_min_swing:
             print("\n[CORRECTION] M7 Output Swing Limit Reached.")
