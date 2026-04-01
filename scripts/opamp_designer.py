@@ -238,7 +238,7 @@ class OpAmpDesigner:
                 print(f" -> Enforcing minimum width of {W_min_um} um.")
                 self.results[f'{name} (um)'] = W_min_um
             else:
-                self.results[f'{name} (um)'] = w_calc
+                self.results[f"{name} (um)"] = w_calc
 
     def print_results(self):
         print("\n=== Physical Dimensions & Biasing ===")
