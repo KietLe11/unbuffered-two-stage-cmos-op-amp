@@ -219,7 +219,9 @@ class OpAmpDesigner:
         lambda_sum_1 = lambda_n_actual + lambda_p_actual
         lambda_sum_2 = lambda_p_actual + lambda_n_actual
 
-        gain_linear = (2 * self.gm2 * self.gm6) / (self.I5 * lambda_sum_1 * self.I6 * lambda_sum_2)
+        gain_linear = (2 * self.gm2 * self.gm6) / (
+            self.I5 * lambda_sum_1 * self.I6 * lambda_sum_2
+        )
         self.gain_dB = 20 * math.log10(gain_linear)
         self.results["Calculated Gain (dB)"] = self.gain_dB
 
