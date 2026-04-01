@@ -226,8 +226,10 @@ class OpAmpDesigner:
         self.results["Calculated Gain (dB)"] = self.gain_dB
 
         # Power Dissipation Verification
-        self.pdiss_mW = ((self.I5 + self.I6) * (self.spec['VDD'] - self.spec['VSS'])) * 1000
-        self.results['Power Diss (mW)'] = self.pdiss_mW
+        self.pdiss_mW = (
+            (self.I5 + self.I6) * (self.spec["VDD"] - self.spec["VSS"])
+        ) * 1000
+        self.results["Power Diss (mW)"] = self.pdiss_mW
 
         # Calculate physical transistor Widths (W = S * L)
         L = self.choice['L_default_um']
