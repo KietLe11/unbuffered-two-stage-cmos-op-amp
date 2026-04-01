@@ -87,7 +87,7 @@ class OpAmpDesigner:
 
     def stage_2_tail_current(self):
         """Step 2: Determine minimum tail current (I5) based on Slew Rate."""
-        SR_V_s = self.choice['SR_target_V_us'] * 1e6
+        SR_V_s = self.choice["SR_target_V_us"] * 1e6
         self.I5 = SR_V_s * self.Cc
         self.results["I5 (uA)"] = self.I5 * 1e6
 
