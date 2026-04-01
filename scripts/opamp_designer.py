@@ -89,7 +89,7 @@ class OpAmpDesigner:
         """Step 2: Determine minimum tail current (I5) based on Slew Rate."""
         SR_V_s = self.choice['SR_target_V_us'] * 1e6
         self.I5 = SR_V_s * self.Cc
-        self.results['I5 (uA)'] = self.I5 * 1e6
+        self.results["I5 (uA)"] = self.I5 * 1e6
 
     def stage_3_active_load(self):
         """Step 3: Size M3 and M4 based on Max ICMR, and Step 4: Verify Mirror Pole."""
