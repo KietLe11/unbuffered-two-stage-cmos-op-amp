@@ -135,9 +135,14 @@ class OpAmpDesigner:
         """Step 6: Size M5 based on Min ICMR."""
         # VDS5(sat) = Vin(min) - VSS - sqrt(I5 / (Kn'*S1)) - Vthn
         beta_1 = self.Kn_prime * self.S1
-        VDS5_sat = self.spec['ICMR_min'] - self.spec['VSS'] - math.sqrt(self.I5 / beta_1) - self.proc['vth0_n']
+        VDS5_sat = (
+            self.spec["ICMR_min"]
+            - self.spec["VSS"]
+            - math.sqrt(self.I5 / beta_1)
+            - self.proc["vth0_n"]
+        )
 
-        if VDS5_sat < 0.1: # Fallback to a minimum 100mV saturation margin if negative
+        if VDS5_sat < 0.1:  # Fallback to a minimum 100mV saturation margin if negative
             print("\n[CORRECTION] M5 Headroom Limit Reached.")
             print(f" -> Calculated VDS5_sat was {VDS5_sat:.4f}V (below safe 0.1V minimum).")
             print(" -> Enforcing minimum VDS5_sat of 0.1V to keep M5 in saturation.")
