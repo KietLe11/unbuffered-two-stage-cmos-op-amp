@@ -213,7 +213,7 @@ class OpAmpDesigner:
 
         gain_linear = (2 * self.gm2 * self.gm6) / (self.I5 * lambda_sum_1 * self.I6 * lambda_sum_2)
         self.gain_dB = 20 * math.log10(gain_linear)
-        self.results['Calculated Gain (dB)'] = self.gain_dB
+        self.results["Calculated Gain (dB)"] = self.gain_dB
 
         # Power Dissipation Verification
         self.pdiss_mW = ((self.I5 + self.I6) * (self.spec['VDD'] - self.spec['VSS'])) * 1000
