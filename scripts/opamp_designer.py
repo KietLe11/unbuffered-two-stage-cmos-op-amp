@@ -266,5 +266,5 @@ class OpAmpDesigner:
         print("=================================\n")
 
 if __name__ == "__main__":
-    designer = OpAmpDesigner('design_params.yaml')
+    designer = OpAmpDesigner("design_params.yaml")
     designer.run_all_stages()
