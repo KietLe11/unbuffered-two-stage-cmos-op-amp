@@ -211,11 +211,24 @@ class OpAmpDesigner:
 
         # Calculate physical transistor Widths (W = S * L)
         L = self.choice['L_default_um']
-        self.results['W1, W2 (um)'] = self.S1 * L
-        self.results['W3, W4 (um)'] = self.S3 * L
-        self.results['W5 (um)'] = self.S5 * L
-        self.results['W6 (um)'] = self.S6 * L
-        self.results['W7 (um)'] = self.S7 * L
+        W_min_um = 0.22
+
+        raw_widths = {
+            'W1, W2': self.S1 * L,
+            'W3, W4': self.S3 * L,
+            'W5': self.S5 * L,
+            'W6': self.S6 * L,
+            'W7': self.S7 * L
+        }
+
+        for name, w_calc in raw_widths.items():
+            if w_calc < W_min_um:
+                print(f"\n[CORRECTION] DRC Minimum Width Limit Reached for {name}.")
+                print(f" -> Calculated width ({w_calc:.4f} um) is below the minimum width (0.22 um).")
+                print(f" -> Enforcing minimum width of {W_min_um} um.")
+                self.results[f'{name} (um)'] = W_min_um
+            else:
+                self.results[f'{name} (um)'] = w_calc
 
     def print_results(self):
         print("\n=== Physical Dimensions & Biasing ===")
